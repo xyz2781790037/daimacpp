@@ -2,7 +2,7 @@
 #include<stdio.h>
 void cube(double n)
 {
-    printf("%.6lf", n * n * n);
+    printf("%lf", n * n * n);
 }
 int main()
 {
