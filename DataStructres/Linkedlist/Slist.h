@@ -9,4 +9,4 @@ typedef struct SlistNode
 } Sltnode;
 
 void SlistPrint(Sltnode *phead);
-void SlistPushBack(Sltnode *phead, Sldatatype x);
+void SlistPushBack(Sltnode **pphead, Sldatatype x);

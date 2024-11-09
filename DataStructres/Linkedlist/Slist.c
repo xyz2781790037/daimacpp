@@ -9,19 +9,19 @@ void SlistPrint(Sltnode *phead)
         cur = cur->next; // next是存储下一个data的地址的指针
     }
 }
-void SlistPushBack(Sltnode *phead, Sldatatype x)
+void SlistPushBack(Sltnode **pphead, Sldatatype x)
 {
     Sltnode *newnode = (Sltnode *)malloc(sizeof(Sltnode));
     newnode->data = x;
     newnode->next = NULL;
 
-    if (phead = NULL)
+    if (*pphead == NULL)
     {
-        phead = newnode;
+        *pphead = newnode;
     }
     else
     {
-        Sltnode *tail = phead;
+        Sltnode *tail = *pphead;
         // 找到尾节点
         while (tail->next != NULL)
         {
