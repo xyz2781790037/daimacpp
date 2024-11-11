@@ -1,0 +1,5 @@
+.vscode
+.idea
+**/build/
+/**/a.out
+StrbufTest/**/*c
