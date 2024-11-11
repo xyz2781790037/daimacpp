@@ -116,25 +116,55 @@ void strbuf_insert(struct strbuf *sb, size_t pos, const void *data, size_t len) 
 }
 
 void strbuf_ltrim(struct strbuf *sb) {
-    for (int i = 0; i < sb->len; i++) {
-        if (sb->buf[i] == ' ' || sb->buf[i] == '\t') {
-            sb->buf[i] = '\0';
-            continue;
-        } else {
-            sb->len -= i;
-            sb->buf = sb->buf + i;
-            sb->buf[sb->len] = '\0';
-            break;
-        }
+    int i = 0, j = 0;
+    while (sb->buf[i] == ' ' || sb->buf[i] == '\t') {
+        i++;
     }
+    for (j = 0; i < sb->len; j++) {
+        sb->buf[j] = sb->buf[i];
+        i++;
+    }
+    sb->len = j;
+    sb->buf[sb->len] = '\0';
 }
 void strbuf_rtrim(struct strbuf *sb) {
+    int i = 0;
+    while (sb->buf[i] != '\t') {
+        i++;
+    }
+    sb->buf[i] = '\0';
+    sb->len = i;
 }
-void strbuf_remove(struct strbuf *sb, size_t pos, size_t len) {}
+void strbuf_remove(struct strbuf *sb, size_t pos, size_t len) {
+    for (int i = pos; i < sb->len; i++) {
+        sb->buf[i] = sb->buf[i + len];
+    }
+    sb->len -= len;
+    sb->buf[sb->len] = '\0';
+}
 
-ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {}
-int strbuf_getline(struct strbuf *sb, FILE *fp) {}
+ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
+    return 0;
+}
+int strbuf_getline(struct strbuf *sb, FILE *fp) {
+    sb->buf = (char *) realloc(sb->buf, 200);
+    return 0;
+}
 
-struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {}
-bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {}
-char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {}
+struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) { return 0; }
+bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
+    for (int i = 0; i < strlen(str);i++)
+    {
+        if(str[i] != target_str[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {
+    int index = 0;
+    char *str = (char *) malloc(end - begin);
+    strncpy(target_buf + begin, str, begin - end);
+    return str;
+}
