@@ -47,8 +47,8 @@ void strbuf_reset(struct strbuf *sb) {
 
 void strbuf_grow(struct strbuf *sb, size_t extra) {
     if (sb->alloc - sb->len < extra) {
-        sb->alloc = sb->len + extra;
-        sb->buf = (char *) realloc(sb->buf, sb->alloc + 1);
+        sb->alloc = sb->len + extra + 1;
+        sb->buf = (char *) realloc(sb->buf, sb->alloc);
     }
 }
 void strbuf_add(struct strbuf *sb, const void *data, size_t len) {
@@ -144,7 +144,7 @@ void strbuf_remove(struct strbuf *sb, size_t pos, size_t len) {
 }
 
 ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
-    strbuf_grow(sb, hint?hint : 8192);
+    strbuf_grow(sb, hint ? hint : 8192);
     FILE *fb = fdopen(fd, "r");
     fscanf(fb, "%[^EOF]", sb->buf + sb->len);
     sb->len = strlen(sb->buf);
@@ -158,17 +158,22 @@ struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, in
     return 0;
 }
 bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
-    int len = strlen(str) < strnlen? strlen(str) : strnlen;
+    if (strnlen == 0)
+        return true;
+    int len = strlen(str);
     int flag = strncmp(target_str, str, len);
     if (flag == 0) {
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {
-    int index = 0;
-    char *str = (char *) malloc(end - begin);
-    strncpy(target_buf + begin, str, begin - end);
+    if(len == 0)
+    {
+        return NULL;
+    }
+    char *str = (char *) malloc(end - begin + 1);
+    strncpy(str, target_buf + begin, end - begin);
+    str[end - begin] = '\0';
     return str;
 }
