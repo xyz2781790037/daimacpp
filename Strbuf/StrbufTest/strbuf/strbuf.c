@@ -144,23 +144,37 @@ void strbuf_remove(struct strbuf *sb, size_t pos, size_t len) {
 }
 
 ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
-    return 0;
+    if (hint + sb->len >= sb->alloc) {
+        sb->alloc = hint + sb->len;
+        sb->buf = (char *) realloc(sb->buf, sb->alloc + 1);
+    }
+    FILE *fb = fdopen(fd, "r");
+    char* str = (char *) malloc(hint);
+    int n = 0;
+    while (fgets(str, (int) hint, fb) != NULL) {
+        n++;
+    }
+    strncpy(sb->buf + sb->len, str, n);
+    free(str);
+    sb->len += n;
+    sb->buf[sb->len] = '\0';
+    return n;
 }
 int strbuf_getline(struct strbuf *sb, FILE *fp) {
-    sb->buf = (char *) realloc(sb->buf, 200);
     return 0;
 }
 
-struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) { return 0; }
+struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {
+    return 0;
+}
 bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
-    for (int i = 0; i < strlen(str);i++)
-    {
-        if(str[i] != target_str[i])
-        {
-            return false;
-        }
+    int len = strlen(str) < strnlen? strlen(str) : strnlen;
+    int flag = strncmp(target_str, str, len);
+    if (flag == 0) {
+        return true;
+    } else {
+        return false;
     }
-    return true;
 }
 char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {
     int index = 0;
