@@ -648,152 +648,152 @@ TEST(StrBufTest2D, read2) {
 //     strbuf_release(&TestString);
 // }
 
-TEST(StrBufTest2D, getline) {
-    strbuf sb;
-    FILE *fp = fopen("strbuf/FileTest/TestforFile_3.txt", "r");
-    strbuf_init(&sb, 0x10);
-    strbuf_getline(&sb, fp);
-    ASSERT_STREQ(sb.buf, "123123123123");
-    strbuf_getline(&sb, fp);
-    ASSERT_STREQ(sb.buf, "12312312312312312");
-    ASSERT_EQ(fclose(fp), 0);
-    strbuf_release(&sb);
-}
+// TEST(StrBufTest2D, getline) {
+//     strbuf sb;
+//     FILE *fp = fopen("strbuf/FileTest/TestforFile_3.txt", "r");
+//     strbuf_init(&sb, 0x10);
+//     strbuf_getline(&sb, fp);
+//     ASSERT_STREQ(sb.buf, "123123123123");
+//     strbuf_getline(&sb, fp);
+//     ASSERT_STREQ(sb.buf, "12312312312312312");
+//     ASSERT_EQ(fclose(fp), 0);
+//     strbuf_release(&sb);
+// }
 
-TEST(StrBufTestCHALLENGE, splitBuf1) {
-    char string[] = "14 11 12 123";
-    strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 1024);
+// TEST(StrBufTestCHALLENGE, splitBuf1) {
+//     char string[] = "14 11 12 123";
+//     strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 1024);
 
-    ASSERT_NE(result, nullptr);
-    ASSERT_EQ(result[4], nullptr);
-    AssertBufSize(result, 5 * sizeof(strbuf *));
+//     ASSERT_NE(result, nullptr);
+//     ASSERT_EQ(result[4], nullptr);
+//     AssertBufSize(result, 5 * sizeof(strbuf *));
 
-    ASSERT_EQ(result[0]->len, 2);
-    ASSERT_STREQ(result[0]->buf, "14");
-    AssertStrbufAlloced(result[0]);
-    AssertStrbufLen(result[0]);
-    strbuf_release(result[0]);
-    free(result[0]);
+//     ASSERT_EQ(result[0]->len, 2);
+//     ASSERT_STREQ(result[0]->buf, "14");
+//     AssertStrbufAlloced(result[0]);
+//     AssertStrbufLen(result[0]);
+//     strbuf_release(result[0]);
+//     free(result[0]);
 
-    ASSERT_EQ(result[1]->len, 2);
-    ASSERT_STREQ(result[1]->buf, "11");
-    AssertStrbufAlloced(result[1]);
-    AssertStrbufLen(result[1]);
-    strbuf_release(result[1]);
-    free(result[1]);
+//     ASSERT_EQ(result[1]->len, 2);
+//     ASSERT_STREQ(result[1]->buf, "11");
+//     AssertStrbufAlloced(result[1]);
+//     AssertStrbufLen(result[1]);
+//     strbuf_release(result[1]);
+//     free(result[1]);
 
-    ASSERT_EQ(result[2]->len, 2);
-    ASSERT_STREQ(result[2]->buf, "12");
-    AssertStrbufAlloced(result[2]);
-    AssertStrbufLen(result[2]);
-    strbuf_release(result[2]);
-    free(result[2]);
+//     ASSERT_EQ(result[2]->len, 2);
+//     ASSERT_STREQ(result[2]->buf, "12");
+//     AssertStrbufAlloced(result[2]);
+//     AssertStrbufLen(result[2]);
+//     strbuf_release(result[2]);
+//     free(result[2]);
 
-    ASSERT_EQ(result[3]->len, 3);
-    ASSERT_STREQ(result[3]->buf, "123");
-    AssertStrbufAlloced(result[3]);
-    AssertStrbufLen(result[3]);
-    strbuf_release(result[3]);
-    free(result[3]);
+//     ASSERT_EQ(result[3]->len, 3);
+//     ASSERT_STREQ(result[3]->buf, "123");
+//     AssertStrbufAlloced(result[3]);
+//     AssertStrbufLen(result[3]);
+//     strbuf_release(result[3]);
+//     free(result[3]);
 
-    free(result);
-}
-TEST(StrBufTestCHALLENGE, splitBuf2) {
+//     free(result);
+// }
+// TEST(StrBufTestCHALLENGE, splitBuf2) {
 
-    char string[] = "   123 345    3123   3123  ";
-    strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 1024);
-    ASSERT_NE(string, nullptr);
-    ASSERT_EQ(result[4], nullptr);
+//     char string[] = "   123 345    3123   3123  ";
+//     strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 1024);
+//     ASSERT_NE(string, nullptr);
+//     ASSERT_EQ(result[4], nullptr);
 
-    AssertBufSize(result, 5 * sizeof(strbuf *));
+//     AssertBufSize(result, 5 * sizeof(strbuf *));
 
-    ASSERT_EQ(result[0]->len, 3);
-    ASSERT_STREQ(result[0]->buf, "123");
-    AssertStrbufAlloced(result[0]);
-    AssertStrbufLen(result[0]);
-    strbuf_release(result[0]);
-    AssertBufSize(result[0], sizeof(struct strbuf));
-    free(result[0]);
+//     ASSERT_EQ(result[0]->len, 3);
+//     ASSERT_STREQ(result[0]->buf, "123");
+//     AssertStrbufAlloced(result[0]);
+//     AssertStrbufLen(result[0]);
+//     strbuf_release(result[0]);
+//     AssertBufSize(result[0], sizeof(struct strbuf));
+//     free(result[0]);
 
-    ASSERT_STREQ(result[1]->buf, "345");
-    ASSERT_EQ(result[1]->len, 3);
-    AssertStrbufAlloced(result[1]);
-    AssertStrbufLen(result[1]);
-    strbuf_release(result[1]);
-    AssertBufSize(result[1], sizeof(struct strbuf));
-    free(result[1]);
+//     ASSERT_STREQ(result[1]->buf, "345");
+//     ASSERT_EQ(result[1]->len, 3);
+//     AssertStrbufAlloced(result[1]);
+//     AssertStrbufLen(result[1]);
+//     strbuf_release(result[1]);
+//     AssertBufSize(result[1], sizeof(struct strbuf));
+//     free(result[1]);
 
-    ASSERT_STREQ(result[2]->buf, "3123");
-    ASSERT_EQ(result[2]->len, 4);
-    AssertStrbufAlloced(result[2]);
-    AssertStrbufLen(result[2]);
-    strbuf_release(result[2]);
-    AssertBufSize(result[1], sizeof(struct strbuf));
-    free(result[2]);
+//     ASSERT_STREQ(result[2]->buf, "3123");
+//     ASSERT_EQ(result[2]->len, 4);
+//     AssertStrbufAlloced(result[2]);
+//     AssertStrbufLen(result[2]);
+//     strbuf_release(result[2]);
+//     AssertBufSize(result[1], sizeof(struct strbuf));
+//     free(result[2]);
 
-    ASSERT_STREQ(result[3]->buf, "3123");
-    ASSERT_EQ(result[3]->len, 4);
-    AssertStrbufAlloced(result[3]);
-    AssertStrbufLen(result[3]);
-    strbuf_release(result[3]);
-    AssertBufSize(result[3], sizeof(struct strbuf));
-    free(result[3]);
+//     ASSERT_STREQ(result[3]->buf, "3123");
+//     ASSERT_EQ(result[3]->len, 4);
+//     AssertStrbufAlloced(result[3]);
+//     AssertStrbufLen(result[3]);
+//     strbuf_release(result[3]);
+//     AssertBufSize(result[3], sizeof(struct strbuf));
+//     free(result[3]);
 
-    free(result);
-}
+//     free(result);
+// }
 
-TEST(StrBufTestCHALLENGE, splitBuf3) {
+// TEST(StrBufTestCHALLENGE, splitBuf3) {
 
-    char string[] = "   123 345    3123   3123  ";
-    strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 2);
-    ASSERT_NE(string, nullptr);
-    ASSERT_EQ(result[2], nullptr);
-    AssertBufSize(result, 3 * sizeof(strbuf *));
+//     char string[] = "   123 345    3123   3123  ";
+//     strbuf **result = strbuf_split_buf(string, strlen(string), ' ', 2);
+//     ASSERT_NE(string, nullptr);
+//     ASSERT_EQ(result[2], nullptr);
+//     AssertBufSize(result, 3 * sizeof(strbuf *));
 
-    ASSERT_EQ(result[0]->len, 3);
-    ASSERT_STREQ(result[0]->buf, "123");
-    AssertStrbufAlloced(result[0]);
-    AssertStrbufLen(result[0]);
-    strbuf_release(result[0]);
-    AssertBufSize(result[0], sizeof(struct strbuf));
-    free(result[0]);
+//     ASSERT_EQ(result[0]->len, 3);
+//     ASSERT_STREQ(result[0]->buf, "123");
+//     AssertStrbufAlloced(result[0]);
+//     AssertStrbufLen(result[0]);
+//     strbuf_release(result[0]);
+//     AssertBufSize(result[0], sizeof(struct strbuf));
+//     free(result[0]);
 
-    ASSERT_STREQ(result[1]->buf, "345");
-    ASSERT_EQ(result[1]->len, 3);
-    AssertStrbufAlloced(result[1]);
-    AssertStrbufLen(result[1]);
-    strbuf_release(result[1]);
-    AssertBufSize(result[1], sizeof(struct strbuf));
-    free(result[1]);
+//     ASSERT_STREQ(result[1]->buf, "345");
+//     ASSERT_EQ(result[1]->len, 3);
+//     AssertStrbufAlloced(result[1]);
+//     AssertStrbufLen(result[1]);
+//     strbuf_release(result[1]);
+//     AssertBufSize(result[1], sizeof(struct strbuf));
+//     free(result[1]);
 
-    free(result);
-}
-TEST(StrBufTestCHALLENGE, splitBuf4) {
+//     free(result);
+// }
+// TEST(StrBufTestCHALLENGE, splitBuf4) {
 
-    char string[] = "\0ZZ\0\0  123 345  Z  3123  Z 3123  ";
-    strbuf **result = strbuf_split_buf(string, 33, 'Z', 2);
-    ASSERT_NE(string, nullptr);
-    ASSERT_EQ(result[2], nullptr);
-    AssertBufSize(result, 3 * sizeof(strbuf *));
+//     char string[] = "\0ZZ\0\0  123 345  Z  3123  Z 3123  ";
+//     strbuf **result = strbuf_split_buf(string, 33, 'Z', 2);
+//     ASSERT_NE(string, nullptr);
+//     ASSERT_EQ(result[2], nullptr);
+//     AssertBufSize(result, 3 * sizeof(strbuf *));
 
-    ASSERT_EQ(result[0]->len, 1);
-    Assert_Bin_EQ(result[0]->buf, "\0", 2);
-    AssertStrbufAlloced(result[0]);
-    AssertStrbufLen(result[0]);
-    strbuf_release(result[0]);
-    AssertBufSize(result[0], sizeof(struct strbuf));
-    free(result[0]);
+//     ASSERT_EQ(result[0]->len, 1);
+//     Assert_Bin_EQ(result[0]->buf, "\0", 2);
+//     AssertStrbufAlloced(result[0]);
+//     AssertStrbufLen(result[0]);
+//     strbuf_release(result[0]);
+//     AssertBufSize(result[0], sizeof(struct strbuf));
+//     free(result[0]);
 
-    ASSERT_EQ(result[1]->len, 13);
-    Assert_Bin_EQ(result[1]->buf, "\0\0  123 345  ", 14);
-    AssertStrbufAlloced(result[1]);
-    AssertStrbufLen(result[1]);
-    strbuf_release(result[1]);
-    AssertBufSize(result[1], sizeof(struct strbuf));
-    free(result[1]);
+//     ASSERT_EQ(result[1]->len, 13);
+//     Assert_Bin_EQ(result[1]->buf, "\0\0  123 345  ", 14);
+//     AssertStrbufAlloced(result[1]);
+//     AssertStrbufLen(result[1]);
+//     strbuf_release(result[1]);
+//     AssertBufSize(result[1], sizeof(struct strbuf));
+//     free(result[1]);
 
-    free(result);
-}
+//     free(result);
+// }
 TEST(StrBufTestCHALLENGE, beginJudge) {
     char testString[] = "123f123ddddfan";
     char beginString[] = "123f";

@@ -144,21 +144,11 @@ void strbuf_remove(struct strbuf *sb, size_t pos, size_t len) {
 }
 
 ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
-    if (hint + sb->len >= sb->alloc) {
-        sb->alloc = hint + sb->len;
-        sb->buf = (char *) realloc(sb->buf, sb->alloc + 1);
-    }
+    strbuf_grow(sb, hint?hint : 8192);
     FILE *fb = fdopen(fd, "r");
-    char* str = (char *) malloc(hint);
-    int n = 0;
-    while (fgets(str, (int) hint, fb) != NULL) {
-        n++;
-    }
-    strncpy(sb->buf + sb->len, str, n);
-    free(str);
-    sb->len += n;
-    sb->buf[sb->len] = '\0';
-    return n;
+    fscanf(fb, "%[^EOF]", sb->buf + sb->len);
+    sb->len = strlen(sb->buf);
+    return sb->len;
 }
 int strbuf_getline(struct strbuf *sb, FILE *fp) {
     return 0;
