@@ -4,11 +4,8 @@ void strbuf_init(struct strbuf *sb, size_t alloc) {
     sb->alloc = alloc;
     sb->buf = (char *) malloc(alloc);
 }
-void strbuf_attach(struct strbuf *sb, void *str, size_t len, size_t alloc) {
+void strbuf_attach(struct strbuf *sb, void *str, size_t len, size_t alloc) { 
     sb->len = len;
-    if (alloc > sb->alloc) {
-        sb->buf = (char *) realloc(sb->buf, alloc);
-    }
     sb->alloc = alloc;
     sb->buf = (char *) str;
 }
@@ -152,16 +149,25 @@ ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
 }
 int strbuf_getline(struct strbuf *sb, FILE *fp) {
     char c;
-    while((c = fgetc(fp))!= '\n' && c!= EOF)
-    {
+    while ((c = fgetc(fp)) != EOF  && c != '\n') {
         strbuf_addch(sb, c);
     }
     return 0;
 }
-
 struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {
-    return 0;
+    char *resultstr[max];
+    struct strbuf **p;
+    int count = 0;
+    for (int i = 0; i < len; i++) {
+        if(i == 0 || str[i - 1] == terminator)
+        {
+            resultstr[count++] = str[i];
+        }
+    }
+    p = resultstr;
+    return p;
 }
+
 bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
     if (strnlen == 0)
         return true;
@@ -172,6 +178,7 @@ bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
     }
     return false;
 }
+
 char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {
     if (len == 0) {
         return NULL;
