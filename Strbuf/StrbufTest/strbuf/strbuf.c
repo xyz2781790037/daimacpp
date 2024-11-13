@@ -151,6 +151,11 @@ ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
     return sb->len;
 }
 int strbuf_getline(struct strbuf *sb, FILE *fp) {
+    char c;
+    while((c = fgetc(fp))!= '\n' && c!= EOF)
+    {
+        strbuf_addch(sb, c);
+    }
     return 0;
 }
 
@@ -168,8 +173,7 @@ bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
     return false;
 }
 char *strbuf_get_mid_buf(char *target_buf, int begin, int end, int len) {
-    if(len == 0)
-    {
+    if (len == 0) {
         return NULL;
     }
     char *str = (char *) malloc(end - begin + 1);
