@@ -4,7 +4,7 @@ void strbuf_init(struct strbuf *sb, size_t alloc) {
     sb->alloc = alloc;
     sb->buf = (char *) malloc(alloc);
 }
-void strbuf_attach(struct strbuf *sb, void *str, size_t len, size_t alloc) { 
+void strbuf_attach(struct strbuf *sb, void *str, size_t len, size_t alloc) {
     sb->len = len;
     sb->alloc = alloc;
     sb->buf = (char *) str;
@@ -149,23 +149,30 @@ ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint) {
 }
 int strbuf_getline(struct strbuf *sb, FILE *fp) {
     char c;
-    while ((c = fgetc(fp)) != EOF  && c != '\n') {
+    while ((c = fgetc(fp)) != EOF && c != '\n') {
         strbuf_addch(sb, c);
     }
     return 0;
 }
 struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {
-    char *resultstr[max];
-    struct strbuf **p;
-    int count = 0;
-    for (int i = 0; i < len; i++) {
-        if(i == 0 || str[i - 1] == terminator)
-        {
-            resultstr[count++] = str[i];
+    // strncpy 会自己加'\0'
+    size_t capacity = 5;
+    size_t arr_size = 0;
+    struct strbuf **arr = NULL;
+    arr = (struct strbuf **) malloc(capacity);
+    for (int i = 0; i < len;i++)
+    {
+        arr[arr_size] = (struct strbuf *) malloc(sizeof(struct strbuf));
+        arr[arr_size]->buf = (char *) malloc(len - 1);
+        while (i < len && str[i] != terminator) {
+            int count = 0;
+            arr[arr_size]->buf[count++] = str[i++];
         }
+        arr[arr_size]->len = strlen(arr[arr_size]->buf);
+        arr_size++;
     }
-    p = resultstr;
-    return p;
+    arr[arr_size]->buf = NULL;
+    return arr;
 }
 
 bool strbuf_begin_judge(char *target_str, const char *str, int strnlen) {
