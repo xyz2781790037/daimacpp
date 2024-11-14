@@ -156,22 +156,34 @@ int strbuf_getline(struct strbuf *sb, FILE *fp) {
 }
 struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {
     // strncpy 会自己加'\0'
-    size_t capacity = 5;
+    size_t capacity = 6;
     size_t arr_size = 0;
+    size_t count = 0;
+    size_t mark = 0;
     struct strbuf **arr = NULL;
-    arr = (struct strbuf **) malloc(capacity);
-    for (int i = 0; i < len;i++)
-    {
-        arr[arr_size] = (struct strbuf *) malloc(sizeof(struct strbuf));
-        arr[arr_size]->buf = (char *) malloc(len - 1);
-        while (i < len && str[i] != terminator) {
-            int count = 0;
-            arr[arr_size]->buf[count++] = str[i++];
+    arr = (struct strbuf **) malloc(capacity * sizeof(struct strbuf *));
+    for (int i = 0; i < len; i++) {
+        if(arr_size == capacity)
+        {
+            capacity *= 2;
+            arr = (struct strbuf **) realloc(arr,capacity * sizeof(struct strbuf *));
         }
-        arr[arr_size]->len = strlen(arr[arr_size]->buf);
+        while (str[i] == terminator) {
+            i++;
+        }
+        count = 0;
+        arr[arr_size] = (struct strbuf *) malloc(sizeof(struct strbuf));
+        while (i < len && str[i] != terminator) {
+            count++, i++;
+        }
+        arr[arr_size]->buf = (char *) malloc(count + 1);
+        arr[arr_size]->len = count;
+        strncpy(arr[arr_size]->buf, &str[mark], count);
+        arr[arr_size]->buf[count] = '\0';
         arr_size++;
+        mark += i + 1;
     }
-    arr[arr_size]->buf = NULL;
+    arr[arr_size] = NULL;
     return arr;
 }
 
