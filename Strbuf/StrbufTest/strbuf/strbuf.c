@@ -62,7 +62,7 @@ void strbuf_addch(struct strbuf *sb, int c) {
         sb->alloc = sb->len + 2;
         sb->buf = (char *) realloc(sb->buf, sb->alloc);
     }
-    sb->buf[sb->len++] = (char)c;
+    sb->buf[sb->len++] = (char) c;
     sb->buf[sb->len] = '\0';
 }
 void strbuf_addstr(struct strbuf *sb, const char *s) {
@@ -156,24 +156,26 @@ int strbuf_getline(struct strbuf *sb, FILE *fp) {
 }
 struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max) {
     size_t arr_size = 0;
-    size_t count = 0;
     size_t mark = 0;
     struct strbuf **arr = (struct strbuf **) malloc((max) * sizeof(struct strbuf));
-    for (size_t i = 0; i <= len && arr_size < max; i++) {
-        if (str[i] == '\0') {
-            break;
-        }
-        while (str[i] == terminator) {
+    for (size_t i = 0; i < len && arr_size < max;) {
+        while (str[i] == (char) terminator) {
             i++;
         }
-        count =  0;
         arr[arr_size] = (struct strbuf *) malloc(sizeof(struct strbuf));
         strbuf_init(arr[arr_size], 0);
-        while (str[i] != '\0' && str[i] != (char) terminator) {
+        while (i < len && str[i] != (char) terminator) {
             strbuf_addch(arr[arr_size], str[i]);
             i++;
         }
+        while (str[i] == (char) terminator) {
+            i++;
+            mark = 1;
+        }
         arr_size++;
+        if (!mark) {
+            i++;
+        }
     }
     arr[arr_size] = NULL;
     return arr;
