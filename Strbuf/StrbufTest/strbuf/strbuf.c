@@ -176,8 +176,8 @@ struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, in
         if (!mark) {
             i++;
         }
-    }
-    arr[arr_size] = NULL;
+    } 
+    arr[arr_size]= NULL;
     return arr;
 }
 
