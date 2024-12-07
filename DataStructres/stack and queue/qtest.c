@@ -12,15 +12,32 @@ void TestQueue()
     QueuePop(&q);
     QueuePop(&q);
     QueuePop(&q);
+    printf("%d\n", QueueBack(&q));
     QueuePush(&q, 10);
     QueuePush(&q, 20);
 
-    printf("%d\n", QueueBack(&q));
+    
     QueueDestroy(&q);
 }
-int main()
+void TestQueue2()
 {
-    int a;
-    
-    return 0;
+    Queue q;
+    QueueInit(&q);
+    QueuePush(&q, 1);
+    QueuePush(&q, 2);
+    QueuePush(&q, 3);
+    QueuePush(&q, 4);
+
+    while(!QueueEmpty(&q))
+    {
+        qdatatype ata = QueueFront(&q);
+        printf("%d  ", ata);
+        QueuePop(&q);
+    }
 }
+    int main()
+    {
+        TestQueue2();
+
+        return 0;
+    }

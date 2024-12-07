@@ -57,7 +57,18 @@ qdatatype QueueBack(Queue *pq)
     assert(!QueueEmpty(pq));
     return pq->tail->data;
 }
-int QueueSize(Queue *pq);
+int QueueSize(Queue *pq)
+{
+    assert(pq);
+    int n = 0;
+    QNode *cur = pq->head;
+    while(cur)
+    {
+        ++n;
+        cur = cur->next;
+    }
+    return n;
+}
 bool QueueEmpty(Queue *pq)
 {
     assert(pq);
