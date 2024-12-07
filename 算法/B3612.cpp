@@ -1,31 +1,29 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-int main()
+class Solution
 {
-    int n, m, l, r;
-    cin >> n;
-    int *arr = (int *)malloc(4 * n);
-    int *sum = (int *)malloc(4 * n);
-    for (int i = 0; i < n; i++)
+public:
+    bool isPalindrome(string s, int x = 0)
     {
-        cin >> arr[i];
-    }
-    sum[0] = arr[0];
-    for (int i = 1; i < n; i++)
-    {
-        sum[i] = arr[i] + sum[i - 1];
-    }
-    cin >> m;
-    for (int i = 0; i < m; i++)
-    {
-        cin >> l >> r;
-        if(l - 2 < 0){
-            cout << sum[r - 1] << endl;
+        char *ss = (char *)malloc(s.size());
+        char *sss = (char *)malloc(s.size());
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (isalnum(s[i]))
+            {
+                if (isupper(s[i]))
+                {
+                    ss[x++] = tolower(s[i]);
+                }
+                else
+                {
+                    ss[x++] = s[i];
+                }
+            }
         }
-        else{
-        cout << sum[r - 1] - sum[l - 2] << endl;
+        for (int i = strlen(ss) - 1; i >= 0; i--)
+        {
+
         }
     }
-    free(arr), free(sum);
-    return 0;
-}
+};
